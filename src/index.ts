@@ -8,7 +8,7 @@ const app = express();
 dotenv.config();
 
 // Middleware
-// app.use(cors({ origin: 'http://localhost:5173' }));
+// app.use(cors({ origin: 'http://sdmcetinsignia.com' }));
 app.use(express.json());
 
 // Add this middleware before your routes
