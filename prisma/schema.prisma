@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Registrations {
+  reg_id      Int     @id @default(autoincrement())
+  name        String  @db.VarChar(100)
+  email       String  @db.VarChar(100)
+  phone       String  @db.VarChar(20)
+  event_id    Int
+  branch_id   Int
+  category_id Int
+  unique_id   String  @unique @db.VarChar(20)
+  branch      Branch  @relation(fields: [branch_id], references: [bid])
+  event       Events  @relation(fields: [event_id], references: [eid])
+  category    Categories @relation(fields: [category_id], references: [cid])
+  created_at  DateTime @default(now()) @db.Timestamp(6)
+}
+
+model Branch {
+  bid           Int            @id @default(autoincrement())
+  bname         String         @db.VarChar(50)
+  registrations Registrations[]
+}
+
+model Admins {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique @db.VarChar(250)
+  password String  @db.VarChar(255)
+  role     String  @default("admin") @db.VarChar(20)
+}
+
+model Categories {
+  cid          Int            @id @default(autoincrement())
+  cname        String         @db.VarChar(50)
+  registrations Registrations[]
+}
+
+model Events {
+  eid              Int     @id @default(autoincrement())
+  ename            String  @db.VarChar(20)
+  description      String  @db.VarChar(5000)
+  venue            String  @db.VarChar(50)
+  timing           DateTime @db.Time(0)
+  date             DateTime @db.Date
+  poster_link      String? @db.Text
+  register         String? @db.VarChar(200)
+  coordinator1     String? @db.VarChar(50)
+  coordinator2     String? @db.VarChar(50)
+  c1phone          String? @db.VarChar(20)
+  c2phone          String? @db.VarChar(20)
+  rules            String? @db.VarChar(9000)
+  bid              Int?
+  cid              Int?
+  prize            Int?
+  participants     Int?
+  unique_code      String  @unique @db.VarChar(20)
+  event_type       String  @db.VarChar(20)
+  min_participants Int?
+  registrations Registrations[]
+}
