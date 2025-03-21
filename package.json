@@ -8,7 +8,7 @@
     "start": "bun dist/index.js",
     "dev": "bun --watch src/index.ts",
     "lint": "eslint src --ext .ts",
-    "prisma:generate": "prisma generate",
+    "prisma:generate": "prisma generate --no-engine",
     "prisma:migrate": "prisma migrate deploy",
     "prepare": "bun run prisma:generate"
   },
